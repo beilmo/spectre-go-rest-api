@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	entity "github.com/beilmo/spectre-go-entity"
+	entity "github.com/beilmo/spectre-go-rest-api/entity"
 
 	"github.com/golang/protobuf/proto"
 	"github.com/gorilla/mux"
