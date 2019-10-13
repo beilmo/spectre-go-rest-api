@@ -5,19 +5,19 @@ import (
 	"net/http"
 
 	"github.com/beilmo/spectre-go-rest-api/application"
-	"github.com/beilmo/spectre-go-rest-api/infrastructure/storage"
 	"github.com/gorilla/mux"
 )
 
 // NewRouter fctory.
-func NewRouter(logger application.Logger) *mux.Router {
+func NewRouter(logger application.Logger, storage application.Storage) *mux.Router {
 	sessionsHandler := SessionsRequestHandler{
 		Logger:  logger,
-		Storage: storage.NewSessionRepositoryInMemory(),
+		Storage: storage.Session,
 	}
 
 	router := mux.NewRouter().StrictSlash(true)
 	// router.Use(security.JwtAuthentication) //attach JWT auth middleware
+	router.HandleFunc("/", homeLink)
 	router.HandleFunc("/api/sessions", sessionsHandler.FindAllSessions).Methods("GET")
 	router.HandleFunc("/api/sessions/{id:[0-9]+}", sessionsHandler.FindSessionByID).Methods("GET")
 
