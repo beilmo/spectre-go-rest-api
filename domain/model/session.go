@@ -13,3 +13,21 @@ type Session struct {
 	Speakers []Speaker
 	Keywords []string
 }
+
+func FilterSessions(list []Session, test func(Session) bool) (ret []Session) {
+	for _, item := range list {
+		if test(item) {
+			ret = append(ret, item)
+		}
+	}
+	return
+}
+
+func SessionListContains(list []Session, test func(Session) bool) bool {
+	for _, item := range list {
+		if test(item) {
+			return true
+		}
+	}
+	return false
+}

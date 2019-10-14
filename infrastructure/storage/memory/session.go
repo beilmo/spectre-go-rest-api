@@ -3,6 +3,7 @@ package memory
 import (
 	"time"
 
+	"github.com/beilmo/spectre-go-rest-api/domain/model"
 	entity "github.com/beilmo/spectre-go-rest-api/domain/model"
 )
 
@@ -25,7 +26,7 @@ func NewSessionStorage() SessionStorage {
 		Keywords: []string{},
 	})
 	list = append(list, entity.Session{
-		ID:       1,
+		ID:       2,
 		Title:    "Go by the stack overflow",
 		Abstract: "Don't copy and paste",
 		Room:     "301",
@@ -43,8 +44,15 @@ func (s SessionStorage) FindAll() ([]entity.Session, error) {
 	return s.List, nil
 }
 
-func (s SessionStorage) FindByID(int64) (entity.Session, error) {
-	return s.List[0], nil
+func (s SessionStorage) FindByID(id int64) (entity.Session, error) {
+	test := func(s entity.Session) bool { return s.ID == id }
+	results := model.FilterSessions(s.List, test)
+
+	if len(results) == 0 {
+		return entity.Session{}, nil
+	}
+
+	return results[0], nil
 }
 
 func (s SessionStorage) Store(newSession entity.Session) (entity.Session, error) {

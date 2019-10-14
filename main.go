@@ -11,13 +11,15 @@ import (
 )
 
 func main() {
-	storage := application.Storage{
-		Session: memory.NewSessionStorage(),
+	repository := application.Repository{
+		Session:            memory.NewSessionStorage(),
+		Speaker:            memory.NewSpeakerStorage(),
+		SessionSpeakerLink: memory.NewSessionSpeakerLinkStorage(),
 	}
 
 	logger := logging.ConsoleLogger{}
-	router := router.NewRouter(logger, storage)
+	router := router.NewRouter(logger, repository)
 
 	logger.Log("Serving requests on :8080")
-	logger.LogFatality(http.ListenAndServe(":8088", router))
+	logger.LogFatality(http.ListenAndServe(":8091", router))
 }

@@ -24,6 +24,13 @@ func DecodeSession(in dto.Session) model.Session {
 
 // EncodeSession - function that converts from a domain entity to a dto entity.
 func EncodeSession(in model.Session) dto.Session {
+	speakers := []*dto.Speaker{}
+
+	for _, speaker := range in.Speakers {
+		encodedValue := EncodeSpeaker(speaker)
+		speakers = append(speakers, &encodedValue)
+	}
+
 	out := dto.Session{
 		Id:       in.ID,
 		Title:    in.Title,
@@ -31,6 +38,7 @@ func EncodeSession(in model.Session) dto.Session {
 		Room:     in.Room,
 		Date:     in.Date.Unix(),
 		Duration: in.Duration,
+		Speakers: speakers,
 		Keywords: in.Keywords,
 	}
 

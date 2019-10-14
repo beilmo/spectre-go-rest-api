@@ -9,10 +9,10 @@ import (
 )
 
 // NewRouter fctory.
-func NewRouter(logger application.Logger, storage application.Storage) *mux.Router {
+func NewRouter(logger application.Logger, repository application.Repository) *mux.Router {
 	sessionsHandler := SessionsRequestHandler{
-		Logger:  logger,
-		Storage: storage.Session,
+		Logger:     logger,
+		Repository: repository,
 	}
 
 	router := mux.NewRouter().StrictSlash(true)
