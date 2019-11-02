@@ -3,23 +3,28 @@ package main
 import (
 	"net/http"
 
-	"github.com/beilmo/spectre-go-rest-api/application"
-
-	"github.com/beilmo/spectre-go-rest-api/infrastructure/logging"
-	"github.com/beilmo/spectre-go-rest-api/infrastructure/router"
-	"github.com/beilmo/spectre-go-rest-api/infrastructure/storage/memory"
+	"github.com/beilmo/spectre-go-rest-api/domain"
+	"github.com/beilmo/spectre-go-rest-api/persistence"
+	"github.com/beilmo/spectre-go-rest-api/platform"
+	"github.com/beilmo/spectre-go-rest-api/presentation"
 )
 
 func main() {
-	repository := application.Repository{
-		Session:            memory.NewSessionStorage(),
-		Speaker:            memory.NewSpeakerStorage(),
-		SessionSpeakerLink: memory.NewSessionSpeakerLinkStorage(),
-	}
+	/// 1. Create the REPO
+	repo := persistence.NewInMemoryRepository()
 
-	logger := logging.ConsoleLogger{}
-	router := router.NewRouter(logger, repository)
+	/// 2. Create the USE CASE FACTORY with the REPO
+	useCaseFactory := domain.NewUseCaseFactory(repo)
 
-	logger.Log("Serving requests on :8080")
-	logger.LogFatality(http.ListenAndServe(":8091", router))
+	/// 3. Create the VIEW MODELS with the USE CASE FACTORY
+	sessionViewModel := presentation.NewSessionViewModel(useCaseFactory)
+
+	/// 4. Create the CONTROLLERS with the VIEW MODELS
+	sessionController := platform.NewSessionController(sessionViewModel)
+
+	/// 5. Create the ROUTER with the CONTROLLERS
+	router := platform.NewRouter(sessionController)
+
+	/// 6. Launch the SERVER
+	http.ListenAndServe(":8080", router)
 }
