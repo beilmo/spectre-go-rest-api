@@ -1,4 +1,4 @@
-package model
+package domain
 
 // Speaker entity
 type Speaker struct {

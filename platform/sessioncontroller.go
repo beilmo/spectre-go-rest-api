@@ -2,8 +2,11 @@ package platform
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/beilmo/spectre-go-rest-api/presentation"
+	"github.com/golang/protobuf/jsonpb"
+	"github.com/gorilla/mux"
 )
 
 // SessionController type.
@@ -27,9 +30,22 @@ func (controller SessionController) Routes() Routes {
 }
 
 // List -
-func (controller *SessionController) List(responseWriter http.ResponseWriter, r *http.Request) {
+func (controller *SessionController) List(w http.ResponseWriter, r *http.Request) {
+	s, _ := controller.viewModel.GetAllSessions()
+
+	m := jsonpb.Marshaler{}
+
+	w.Header().Add("Content-Type", "application/json")
+	m.Marshal(w, &s)
 }
 
 // FindByID -
-func (controller *SessionController) FindByID(responseWriter http.ResponseWriter, r *http.Request) {
+func (controller *SessionController) FindByID(w http.ResponseWriter, r *http.Request) {
+	id, _ := strconv.ParseInt(mux.Vars(r)["id"], 10, 64)
+	s, _ := controller.viewModel.GetSession(id)
+
+	m := jsonpb.Marshaler{}
+
+	w.Header().Add("Content-Type", "application/json")
+	m.Marshal(w, &s)
 }

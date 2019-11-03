@@ -1,13 +1,13 @@
 package serializers
 
 import (
-	"github.com/beilmo/spectre-go-rest-api/domain/model"
-	"github.com/beilmo/spectre-go-rest-api/interfaces/api/dto"
+	"github.com/beilmo/spectre-go-rest-api/domain"
+	"github.com/beilmo/spectre-go-rest-api/presentation/dto"
 )
 
 // DecodeSpeaker - function that converts from a dto entity to a domain entity.
-func DecodeSpeaker(in dto.Speaker) model.Speaker {
-	out := model.Speaker{
+func DecodeSpeaker(in dto.Speaker) domain.Speaker {
+	out := domain.Speaker{
 		ID:          in.Id,
 		FirstName:   in.FirstName,
 		LastName:    in.LastName,
@@ -25,7 +25,7 @@ func DecodeSpeaker(in dto.Speaker) model.Speaker {
 }
 
 // EncodeSpeaker - function that converts from a domain entity to a dto entity.
-func EncodeSpeaker(in model.Speaker) dto.Speaker {
+func EncodeSpeaker(in domain.Speaker) dto.Speaker {
 	out := dto.Speaker{
 		Id:          in.ID,
 		FirstName:   in.FirstName,

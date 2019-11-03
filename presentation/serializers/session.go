@@ -3,13 +3,13 @@ package serializers
 import (
 	"time"
 
-	"github.com/beilmo/spectre-go-rest-api/domain/model"
-	"github.com/beilmo/spectre-go-rest-api/interfaces/api/dto"
+	"github.com/beilmo/spectre-go-rest-api/domain"
+	"github.com/beilmo/spectre-go-rest-api/presentation/dto"
 )
 
 // DecodeSession - function that converts from a dto entity to a domain entity.
-func DecodeSession(in dto.Session) model.Session {
-	out := model.Session{
+func DecodeSession(in dto.Session) domain.Session {
+	out := domain.Session{
 		ID:       in.Id,
 		Title:    in.Title,
 		Abstract: in.Abstract,
@@ -23,7 +23,7 @@ func DecodeSession(in dto.Session) model.Session {
 }
 
 // EncodeSession - function that converts from a domain entity to a dto entity.
-func EncodeSession(in model.Session) dto.Session {
+func EncodeSession(in domain.Session) dto.Session {
 	speakers := []*dto.Speaker{}
 
 	for _, speaker := range in.Speakers {
